@@ -6,6 +6,23 @@ import glob
 ### Thanks to JudoWill (Will Dampier) for the help regarding this code.
 
 
+
+def de_safe_xml(kinda_xml):
+    """Converts an escaped HTML/XML into a more normal string."""
+
+    htmlCodes = (
+        ('&', '&amp;'),
+        ('<', '&lt;'),
+        ('>', '&gt;'),
+        ('"', '&quot;'),
+        ("'", '&#39;'))
+
+    for rep, orig in htmlCodes:
+        kinda_xml = kinda_xml.replace(orig, rep)
+    return kinda_xml
+
+
+
 def generate_whatizit_client():
     """Generates a SUDS client for the Whatizit webservice."""
 
@@ -33,7 +50,7 @@ def ask_whatizit(raw_text, client = None, pipeline = 'whatizitEBIMed'):
                                         text = raw_text, 
                                         convertToHtml = False)
         
-        return (response,tagged_text)
+        return (de_safe_xml(response),tagged_text)
     
 
 
