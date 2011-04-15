@@ -58,16 +58,15 @@ def run_batch (in_path,out_path):
     for infile in glob.glob( os.path.join(in_path, '*.txt') ):
         fname=os.path.basename(infile)
         real_name=os.path.splitext(fname)[0]
-        text_in=open(infile, 'r+')
-        text_raw=text_in.read()
-        text_in.close()
+        with open(infile, 'r+') as text_in:
+            text_raw=text_in.read()
+    
         (resp,tagged_text)=ask_whatizit(text_raw)
         if(resp==200):
             out_xml_name=real_name+'.xml'
             out_file=os.path.join(out_path,out_xml_name)
-            text_out=open(out_file,'w')
-            text_out.write(tagged_text)
-            text_out.close()
+            with open(out_file,'w') as text_out:
+                text_out.write(tagged_text)
         else:
             print "Error in file: " + infile
         
